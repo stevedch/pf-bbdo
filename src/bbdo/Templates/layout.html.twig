@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="es" data-ng-app>
+<head>
+    <meta charset="utf-8">
+    <meta name="HandheldFriendly" content="true">
+    <meta content="BBDO" name="Steven Delgado Chacón"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="BBDO es una agencia de publicidad integrada internacional con más de 30 años de experiencia en el mercado."
+          name="description"/>
+    <link rel="icon" type="image/x-icon" href="{{ app.request.basepath }}/img/logo_title.gif"/>
+    <title>{{ 'BBDO'|trans }}</title>
+    {% block stylesheets %}
+        {% for name, version in {
+        'bootstrap.css':'1.0',
+        'font-awesome.css':'1.0',
+        'layout-large.css':'1.0',
+        'birth-day.css':'1.0',
+        } %}
+            <link href="{{ app.request.basepath }}/css/{{ name }}?v={{ version }}" rel="stylesheet" type="text/css">
+        {% endfor %}
+    {% endblock %}
+
+
+    {% block stylesheet %}
+        {% for name, version in {
+
+        } %}
+            <link href="{{ app.request.basepath }}/css/{{ name }}?v={{ version }}" rel="stylesheet" type="text/css">
+        {% endfor %}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% for asset in [
+        'jquery-2.1.3.min.js',
+        'bootstrap.js',
+        'effect.js'
+        ] %}
+            <script src="{{ app.request.basepath }}/js/{{ asset }}" type="text/javascript"></script>
+        {% endfor %}
+    {% endblock %}
+    {% block javascript %}
+        {% for asset in [
+        ] %}
+            <script src="{{ app.request.basepath }}/js/{{ asset }}" type="text/javascript"></script>
+        {% endfor %}
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-default nav-base navbar-inner"><!--Barra de navegación bootstrap-->
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">navbar-BBDO</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="{{ path('bbdo_homepage') }}"><img src="{{ app.request.basepath }}/img/logo_bbdo.png"
+                                                       class="img-responsive img-base"></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav" style="cursor: pointer;">
+                <li><a href="{{ path('bbdo_homepage') }}"><i class="fa fa-home"></i>&nbsp;{{ 'Inicio'|trans }}</a>
+                </li>
+                <!--Class active por revisar-->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-expanded="false"><i class="fa fa-laptop"></i>&nbsp;{{ 'Tecnología Información' |trans }}
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ path('bbdo_ti_document') }}">{{ 'Documentación' |trans }}</a></li>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <li class="divider"></li>
+                            <li class="dropdown-header">{{ 'Administración' |trans }}</li>
+                            <li><a href="{{ path('bbdo_admin_users') }}">{{ 'Registro de empleados' |trans }}</a>
+                            <li>
+                                <a href="{{ path('bbdo_admindocument_view') }}">{{ 'Biblioteca de archivos' |trans }}</a>
+                            </li>
+                        {% endif %}
+
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-expanded="false"><i class="fa fa-users"></i>&nbsp;{{ 'Recursos Humanos' |trans }}<span
+                                class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ path('bbdo_organizationchart') }}">{{ 'Organigrama' |trans }}</a></li>
+                        <li><a href="{{ path('bbdo_directory') }}">{{ 'Directorio telefónico' |trans }}</a></li>
+                        {% if is_granted('ROLE_RRHH_ADMIN') %}
+                            <li class="divider"></li>
+                            <li class="dropdown-header">{{ 'Administración' |trans }}</li>
+                            <li>
+                                <a href="{{ path('bbdo_admin_users') }}">{{ 'Registro de empleados' |trans }}</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-expanded="false"><i class="fa fa-newspaper-o"></i>&nbsp;{{ 'Avisos' |trans }}<span
+                                class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ path('bbdo_index_notice') }}">{{ 'Lista de avisos' |trans }}</a></li>
+                        {% if is_granted('ROLE_USER') %}
+                        <li><a href="{{ path('bbdo_admin_notice_add') }}">{{ 'Añadir un  nuevo aviso' |trans }}</a>
+                            {% endif %}
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if is_granted('ROLE_USER') %}
+                    <li>
+                        <a href="{{ path('bbdo_logout') }}">{% block login_session %}{{ 'Cerrar sesión'|trans }}{% endblock %}</a>
+                    </li>
+                {% else %}
+                    <li><a href="{{ path('bbdo_login') }}">{{ 'Iniciar sesión'|trans }}&nbsp;<i
+                                    class="fa fa-user-secret"> </i></a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+    <!--/.container-fluid -->
+</nav>
+<!--Barra de navegación bootstrap-END-->
+<div class="wrapper">
+    <header class="header-bbdo text-center container-fluid">
+        <h4 class="size-font">{{ 'BIENVENIDO AL PORTAL DE BBDO'|trans }}</h4>
+    </header>
+    <div class="content">
+        {% block body %}
+            {% block content_primary %}{% endblock %}
+        {% endblock %}
+    </div>
+    <!--Content END-->
+    <footer class="footer">
+        <div class="arrow-down"></div>
+        <div class="container">
+            <div class="row" style="padding: 60px;">
+                <div class="col-md-6">
+                    <div class="blockquote-box clearfix">
+                        <div class="square pull-left">
+                            <i class="fa fa-tags fa-2x"></i>
+                        </div>
+                        <h4 class="text-crimson">
+                            lorem ipsum</h4>
+
+                        <p class="fontfamily">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                            ante.
+                        </p>
+                    </div>
+                    <div class="blockquote-box blockquote-primary clearfix">
+                        <div class="square pull-left">
+                            <i class="fa fa-terminal fa-2x"></i>
+                        </div>
+                        <h4 class="text-crimson">
+                            lorem ipsum</h4>
+
+                        <p class="fontfamily">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                            ante.
+                        </p>
+                    </div>
+                    <div class="blockquote-box blockquote-success clearfix">
+                        <div class="square pull-left">
+                            <i class="fa fa-paper-plane fa-2x"></i>
+                        </div>
+                        <h4 class="text-crimson">
+                            lorem ipsum</h4>
+
+                        <p class="fontfamily">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                            ante.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="blockquote-box blockquote-info clearfix">
+                        <div class="square pull-left">
+                            <i class="fa fa-coffee fa-2x"></i>
+                        </div>
+                        <h4 class="text-crimson">
+                            lorem ipsum</h4>
+
+                        <p class="fontfamily">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                            ante.
+                        </p>
+                    </div>
+                    <div class="blockquote-box blockquote-warning clearfix">
+                        <div class="square pull-left">
+                            <i class="fa fa-whatsapp fa-2x"></i>
+                        </div>
+                        <h4 class="text-crimson">
+                            lorem ipsum</h4>
+
+                        <p class="fontfamily">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                            ante.
+                        </p>
+                    </div>
+                    <div class="blockquote-box blockquote-danger clearfix">
+                        <div class="square pull-left">
+                            <i class="fa fa-viacoin fa-2x"></i>
+                        </div>
+                        <h4 class="text-crimson">
+                            lorem ipsum</h4>
+
+                        <p class="fontfamily">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                            ante.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

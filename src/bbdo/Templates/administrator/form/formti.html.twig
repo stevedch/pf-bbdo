@@ -1,0 +1,116 @@
+<div class="container-fluid div-container-table" id="no-more-tables">
+    <div class="row">
+        <div class="col-lg-12" style="margin: 3em auto;">
+
+            <div class="search-right">
+                <input type="text" class="form-control input-sm" maxlength="64" id="input-search"
+                       placeholder="Asistente de búsqueda"/>
+                <button type="submit" class="btn b-absolute btn-bbdo-color btn-sm"><i class="fa fa-search">
+                    </i></button>
+            </div>
+        </div>
+    </div>
+    <table class="col-md-12 table-bordered table-striped table-condensed  table-hover table-color">
+        <thead class="thead-color">
+        <tr class="tr-height">
+            <th class="btn-responsive text-uppercase text-center">{{ 'Run'|trans }}</th>
+            <th class="btn-responsive text-uppercase text-center">{{ 'Nombre'|trans }}</th>
+            <th class="btn-responsive text-uppercase text-center">{{ 'Apellido paterno'|trans }}</th>
+            <th class="btn-responsive text-uppercase text-center">{{ 'Apellido materno'|trans }}</th>
+            <th class="btn-responsive text-uppercase text-center">{{ 'Fecha nacimiento'|trans }}</th>
+            <th class="btn-responsive text-uppercase text-center">{{ 'Cargo'|trans }}</th>
+            <th class="btn-responsive text-uppercase text-center">{{ 'Area'|trans }}</th>
+            <th class="btn-responsive text-uppercase text-center">{{ 'Usuario'|trans }}</th>
+            <th class="btn-responsive text-uppercase text-center">{{ 'Rol'|trans }}</th>
+            <th class="btn-responsive text-uppercase text-center">{{ 'Opciones'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody class="searchable-container">
+        {% for user in users %}
+            {% if  user.nameUser != 'TI' and user.nameUser != 'RRHH' %}
+                <tr class="items">
+                    <td class="btn-responsive text-center" style="background: rgba(237, 20, 61, 0.84); color: #ffffff;"
+                        data-title="{{ 'Run'|trans }}"> {% if user.runUser %}
+                            <div class="">{{ user.runUser|e }}</div>
+                        {% else %}
+                            <div class="label label-danger">{{ 'Rut no asignado'|trans }}</div>
+                        {% endif %}</td>
+
+                    <td class="btn-responsive" data-title="{{ 'Nombre'|trans }}">
+                        {% if user.nameUser %}
+                            <div class="">{{ user.nameUser|e|title }}</div>
+                        {% else %}
+                            <div class="label label-danger">{{ 'Nombre no asignado'|trans }}</div>
+                        {% endif %}
+                    </td>
+                    <td class="btn-responsive" data-title="{{ 'Apellido paterno'|trans }}">
+                        {% if user.lastnameUser %}
+                            <div class="">{{ user.lastnameUser|e|capitalize }}</div>
+                        {% else %}
+                            <div class="label label-danger">{{ 'Apellido paterno asignado'|trans }}</div>
+                        {% endif %}
+                    </td>
+                    <td class="btn-responsive" data-title="{{ 'Apellido materno'|trans }}">
+                        {% if user.lastnameUser %}
+                            <div class="">{{ user.secondsurname|e|capitalize }}</div>
+                        {% else %}
+                            <div class="label label-danger">{{ 'Apellido materno asignado'|trans }}</div>
+                        {% endif %}
+                    </td>
+                    <td class="btn-responsive text-center" data-title="{{ 'Fecha Nacimiento'|trans }}">
+                        {% if user.birthDate %}
+                            <div class="">{{ user.birthDate|date('Y-m-d')|e }}</div>
+                        {% else %}
+                            <div class="label label-danger">{{ 'fecha de nacimiento no asignado'|trans }}</div>
+                        {% endif %}
+                    </td>
+                    <td class="btn-responsive" data-title="{{ 'Cargo'|trans }}">
+                        {% if user.postUser %}
+                            <div class="">{{ user.postUser|e|capitalize }}</div>
+                        {% else %}
+                            <div class="label label-danger">{{ 'Cargo no asignado'|trans }}</div>
+                        {% endif %}
+                    </td>
+                    <td class="btn-responsive" data-title="{{ 'Area'|trans }}">
+                        {% if user.areaUser %}
+                            <div class="">{{ user.areaUser|e|title }}</div>
+                        {% else %}
+                            <div class="label label-danger">{{ 'Area no asignada'|trans|upper }}</div>
+                        {% endif %}
+                    </td>
+                    <td class="btn-responsive" data-title="{{ 'Usuario'|trans }}">
+                        {% if user.username %}
+                            {{ user.username|e }}
+                        {% else %}
+                            <div class="label label-default">{{ 'Usuario no asignado'|trans|upper }}</div>
+                        {% endif %}
+                    </td>
+                    <td class="btn-responsive" data-title="{{ 'Rol'|trans }}">
+                        {% if user.role == 'ROLE_SUPER_ADMIN' %}
+                            {{ 'Administrador TI'|trans }}
+                        {% elseif user.role == 'ROLE_RRHH_ADMIN' %}
+                            {{ 'Administrador RRHH'|trans }}
+                        {% elseif user.role == 'ROLE_USER' %}
+                            {{ 'Usuario Estandar'|trans }}
+                        {% else %}
+                            <div class="label label-default"> {{ 'Rol no asignado'|trans|upper }}</div>
+                        {% endif %}
+                    </td>
+                    <td class="btn-responsive text-center text-nowrap" data-title="{{ 'Opciones'|trans }}">
+                        <a class="label label-primary"
+                           href="{{ path('bbdo_admin_users_edit', {'user': user.iduser}) }}"><i
+                                    class="fa fa-pencil-square-o"></i>&nbsp;EDITAR</a>
+                        <a class="label label-danger"
+                           href="{{ path('bbdo_admin_users_delete',{'user': user.iduser}) }}"><i
+                                    class="fa fa-trash-o"></i>&nbsp;ELIMINAR</a>
+                    </td>
+                </tr>
+            {% endif %}
+        {% else %}
+            <tr>
+                <td class="text-center text-danger" colspan="11">{{ 'Ningún usuario ha sido creado.'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

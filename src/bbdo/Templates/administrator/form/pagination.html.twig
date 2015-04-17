@@ -1,0 +1,23 @@
+{% if numPages > 1 %}
+    <div class="pagination">
+        <ul class="nav navbar-nav">
+            {% if currentPage == 1 %}
+                <li class="disabled">
+                    <a class="btn btn-sm btn-default" style="padding: 3px;">{{ 'Anterior'|trans }}</a>
+                </li>
+            {% elseif  currentPage == 2 %}
+                <li class="">
+                    <a class="btn btn-sm btn-default" style="padding: 3px;" href="{{ here }}?page={{ currentPage - 1 }}">{{ 'Anterior'|trans }}</a>
+                </li>
+            {% endif %}
+            {% for i in 1..numPages %}
+                <li {% if currentPage == i %}class="active"{% endif %}>
+                    <a class="btn btn-sm btn-default" style="padding: 3px;" href="{{ here }}?page={{ i }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+            <li {% if currentPage == numPages %}class="disabled"{% endif %}>
+                <a class="btn btn-sm btn-default" style="padding: 3px;" href="{{ here }}?page={{ currentPage + 1 }}">{{ 'Siguiente'|trans }}</a>
+            </li>
+        </ul>
+    </div>
+{% endif %}

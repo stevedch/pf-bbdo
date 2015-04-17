@@ -1,0 +1,57 @@
+{% extends 'notice/base.html.twig' %}
+
+{% block  content_primary %}
+    <div class="container-fluid"
+         style="word-wrap: break-word; width: 90%; font-size: 12px;" id="no-more-tables">
+        <div class="col-lg-12" style="margin: 3em auto;">
+            <div class="row">
+                <div class="search-right">
+                    <input type="text" class="form-control input-sm" maxlength="64" id="input-search"
+                           placeholder="Asistente de búsqueda"/>
+                    <button type="submit" class="btn b-absolute btn-bbdo-color btn-sm"><i class="fa fa-search">
+                        </i></button>
+                </div>
+            </div>
+        </div>
+        <table class="col-md-12 table-bordered table-striped table-condensed  table-hover table-color">
+            <thead class="thead-color">
+            <tr class="tr-height ">
+                <!--trans traducción de contenidos estáticos de las plantillas-->
+                <th class="btn-responsive text-uppercase text-center">{{ 'Titulo del aviso'|trans }}</th>
+                <th class="btn-responsive text-uppercase text-center">{{ 'Mensaje'|trans }}</th>
+                <th class="btn-responsive text-uppercase text-center">{{ 'Fecha de publicacion'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody class="searchable-container">
+            {% for notices in notice|sort %}
+                <tr class="items">
+                    <td class="btn-responsive"
+                        data-title="{{ 'Título del aviso'|trans }}" style="background: rgba(237, 20, 61, 0.84);"><a
+                                class="a-href"
+                                href="{{ path('bbdo_view_notice_employee',{'notice': notices.idNotice }) }}">{{ notices.nameNotice|e|capitalize }}</a>
+                    </td>
+                    <td class="btn-responsive "
+                        data-title="{{ 'Mensaje previo'|trans }}">
+                        {% if notices.shortdescriptionNotice is null %}
+                            <small class="label label-warning">Sin mensaje previo</small>
+                        {% else %}
+                            {{ notices.shortdescriptionNotice|capitalize|length > 100 ?notices.shortdescriptionNotice|capitalize|slice(0, 100) ~ '...' : notices.shortdescriptionNotice|capitalize }}
+                        {% endif %}
+                    </td>
+                    <td class="btn-responsive text-center"
+                        data-title="{{ 'Fecha'|trans }}">
+                        {{ notices.createdAt|date('Y-m-d H:i:s') }}
+                        <!--Si esta acutalizado el parche de cambio de hora w7 dejar con esta refencia-->
+                        {# {{ notices.createdAt|date('Y-m-d H:i:s','America/Santiago') }} #}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="text-center text-danger" colspan="11">{{ 'Ningún usuario ha sido creado.'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="col-lg-12 row text-center">{% include 'administrator/form/pagination.html.twig' %}</div>
+    </div>
+{% endblock %}

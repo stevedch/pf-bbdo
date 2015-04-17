@@ -1,0 +1,57 @@
+{% extends "document/base.html.twig" %}
+
+{% block content_primary %}
+    <div class="well-sm well header-bbdo-h container-fluid"><h5
+                class="text-center text-h">{{ title|e|upper }}</h5></div>
+    <div class="container-fluid div-container-table" id="no-more-tables">
+        <div class="col-lg-12" style="margin: 3em auto;">
+            <div class="row">
+                <div class="search-right">
+                    <input type="text" class="form-control input-sm" maxlength="64" id="input-search"
+                           placeholder="Asistente de búsqueda"/>
+                    <button type="submit" class="btn b-absolute btn-bbdo-color btn-sm"><i class="fa fa-search">
+                        </i></button>
+                </div>
+            </div>
+        </div>
+        <table class="col-md-12 table-bordered table-striped table-condensed  table-hover table-color">
+            <thead class="thead-color">
+            <tr class="tr-height">
+                <th class="btn-responsive text-uppercase text-center">{{ 'Titulo'|trans }}</th>
+                <th class="btn-responsive text-uppercase text-center">{{ 'Descripcion'|trans }}</th>
+                <th class="btn-responsive text-uppercase text-center">{{ 'Opciones'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody class="searchable-container">
+            {% for documentview in document %}
+                <tr class="items">
+                    <td class="btn-responsive td-container-color"
+                        data-title="{{ 'Nombre'|trans }}">{{ documentview.nameDocument|e|capitalize }}</td>
+                    <td class="btn-responsive"
+                        data-title="{{ 'Descripción'|trans }}">{{ documentview.shortdescriptionDocument|e|capitalize }}</td>
+                    <td class="btn-responsive text-center"
+                        data-title="{{ 'Fecha de creación'|trans }}">
+                        <small><a class="a-href-d"
+                                  href="{{ app.request.basepath }}/img/document/{{ documentview.nameDocument }}.pdf"
+                                  download="{{ documentview.nameDocument }}"><i class="fa fa-file-pdf-o fa-2x"></i>&nbsp;{{ 'DESCARGAR' }}
+                            </a></small>
+                        &nbsp;&nbsp;
+                        <small>
+                            <a class="a-href-d"
+                               href="{{ app.request.basepath }}/img/document/{{ documentview.nameDocument }}.pdf"><i
+                                        class="fa fa-eye fa-2x"></i>&nbsp;{{ 'VER' }}</a>
+                        </small>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="text-center text-danger" colspan="11">{{ 'Ningún usuario ha sido creado.'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="col-lg-12 row text-center">{% include 'administrator/form/pagination.html.twig' %}</div>
+    </div>
+{% endblock %}
+
+

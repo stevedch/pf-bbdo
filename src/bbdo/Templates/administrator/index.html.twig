@@ -1,0 +1,134 @@
+{% extends 'administrator/base.html.twig' %}
+{% block bbdo %}{{ 'Lista de usuario'|trans }}{% endblock %}
+{% block  body %}
+
+    <div class="well-sm well header-bbdo-h container-fluid"><h5
+                class="text-center text-h">{{ 'REGISTRO DE EMPLEADOS'|e|upper }}</h5></div>
+
+    <div class="container-fluid tab-container"
+         id="no-more-tables">
+        {# {% if app.request.attributes.get('bbdo_admin_users') != 'bbdo_homepage' %}tab-container{% endif %}#}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            {% include 'administrator/form/formti.html.twig' %}
+            <div class="col-lg-12 row text-center"
+                 style="margin: 4em auto;padding: 0;">{% include 'administrator/form/pagination.html.twig' %}</div>
+        {% elseif is_granted('ROLE_RRHH_ADMIN') %}
+            <div class="bs-docs-example">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li><a href="{{ path('bbdo_admin_users') }}">Todos los usuarios</a>
+                    </li>
+                    <li class=""><a href="{{ path('bbdo_admin_pageactive') }}">Usuarios activos</a></li>
+                    <li class=""><a href="{{ path('bbdo_admin_pagedesactive') }}">Usuarios inactivos</a></li>
+                </ul>
+                {% block  content_primary %}
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in">
+                            <div class="col-lg-12" style="margin: 3em auto;">
+                                <div class="row">
+                                    <div class="search-right">
+                                        <input type="text" class="form-control input-sm" maxlength="64"
+                                               id="input-search"
+                                               placeholder="Asistente de búsqueda"/>
+                                        <button type="submit" class="btn b-absolute btn-bbdo-color btn-sm"><i
+                                                    class="fa fa-search">
+                                            </i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="col-md-12 table-bordered table-striped table-condensed  table-hover table-color">
+                                <thead class="thead-color">
+                                <tr class="tr-height">
+                                    <th class="btn-responsive text-uppercase text-center">{{ 'Run'|trans }}</th>
+                                    <th class="btn-responsive text-uppercase text-center">{{ 'Nombre'|trans }}</th>
+                                    <th class="btn-responsive text-uppercase text-center">{{ 'Apellido paterno'|trans }}</th>
+                                    <th class="btn-responsive text-uppercase text-center">{{ 'Apellido materno'|trans }}</th>
+                                    <th class="btn-responsive text-uppercase text-center">{{ 'Fecha nacimiento'|trans }}</th>
+                                    <th class="btn-responsive text-uppercase text-center">{{ 'Estado'|trans }}</th>
+                                    <th class="btn-responsive text-uppercase text-center">{{ 'Opciones'|trans }}</th>
+                                </tr>
+                                </thead>
+                                <tbody class="searchable-container">
+                                {% for user in users %}
+                                    {% if  user.nameUser != 'TI' and user.nameUser != 'RRHH' %}
+                                        <tr class="items">
+                                            <td class="btn-responsive text-center"
+                                                style="background: rgba(237, 20, 61, 0.84); color: #ffffff;"
+                                                data-title="{{ 'Run'|trans }}"> {% if user.runUser %}
+                                                    <div class="">{{ user.runUser|e }}</div>
+                                                {% else %}
+                                                    <div class="label label-danger">{{ 'Rut no asignado'|trans }}</div>
+                                                {% endif %}</td>
+                                            <td class="btn-responsive" data-title="{{ 'Nombre'|trans }}">
+                                                {% if user.nameUser %}
+                                                    <div class="">{{ user.nameUser|e|title }}</div>
+                                                {% else %}
+                                                    <div class="label label-danger">{{ 'Nombre no asignado'|trans }}</div>
+                                                {% endif %}
+                                            </td>
+                                            <td class="btn-responsive" data-title="{{ 'Apellido paterno'|trans }}">
+                                                {% if user.lastnameUser %}
+                                                    <div class="">{{ user.lastnameUser|e|capitalize }}</div>
+                                                {% else %}
+                                                    <div class="label label-danger">{{ 'Apellido paterno asignado'|trans }}</div>
+                                                {% endif %}
+                                            </td>
+                                            <td class="btn-responsive" data-title="{{ 'Apellido materno'|trans }}">
+                                                {% if user.lastnameUser %}
+                                                    <div class="">{{ user.secondsurname|e|capitalize }}</div>
+                                                {% else %}
+                                                    <div class="label label-danger">{{ 'Apellido materno asignado'|trans }}</div>
+                                                {% endif %}
+                                            </td>
+                                            <td class="btn-responsive text-center"
+                                                data-title="{{ 'Fecha Nacimiento'|trans }}">
+                                                {% if user.birthDate %}
+                                                    <div class="">{{ user.birthDate|date('Y-m-d')|e }}</div>
+                                                {% else %}
+                                                    <div class="label label-danger">{{ 'fecha de nacimiento no asignado'|trans }}</div>
+                                                {% endif %}
+                                            </td>
+                                            <td class="btn-responsive text-center" data-title="{{ 'Estado'|trans }}">
+                                                {% if user.statusUser == 'Activo' %}
+                                                    <small class="label label-success"> {{ user.statusUser|upper }}</small>
+                                                {% elseif user.statusUser == 'Desactivado' %}
+                                                    <small class="label label-danger">{{ user.statusUser|upper }}</small>
+                                                {% elseif user.statusUser is null %}
+                                                    <small class="label label-warning">{{ 'Estado no asigando'|trans }}</small>
+                                                {% endif %}
+                                            </td>
+                                            <td class="btn-responsive text-center" data-title="{{ 'Opciones'|trans }}">
+                                                <a class="label label-primary"
+                                                   href="{{ path('bbdo_admin_users_edit', {'user': user.iduser}) }}"><i
+                                                            class="fa fa-pencil-square-o"></i>&nbsp;EDITAR</a>
+                                            </td>
+                                        </tr>
+
+                                    {% endif %}
+                                {% else %}
+                                    <tr>
+                                        <td class="text-center text-danger"
+                                            colspan="11">{{ 'Ningún usuario ha sido creado.'|trans }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="col-lg-12 row text-center">{% include 'administrator/form/pagination.html.twig' %}</div>
+                        </div>
+                        <div class="tab-pane fade">
+                            {% block form_active %}
+                            {% endblock %}
+                        </div>
+                        <div class="tab-pane fade">
+                            {% block form_desactive %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        {% endif %}
+        {% if  is_granted('ROLE_RRHH_ADMIN') %}
+            <div class="col-lg-12"><a style="float: right;" href="{{ path('bbdo_admin_users_add') }}"
+                                      class="btn  btn-success btn-sm">{{ 'Añadir usuario'|trans }}</a></div>
+        {% endif %}
+    </div>
+{% endblock %}

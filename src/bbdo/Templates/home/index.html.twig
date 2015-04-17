@@ -1,0 +1,146 @@
+{% extends "home/base.html.twig" %}
+{% set active = "bbdo_homepage" %}
+{% set nameactive = 'active' %}
+{% set number = [0,1,2,3] %}
+
+{% block stylesheet %}
+    {% for name, version in {
+    'birth-day.css':'1.0',
+    } %}
+        <link href="{{ app.request.basepath }}/css/{{ name }}?v={{ version }}" rel="stylesheet" type="text/css">
+    {% endfor %}
+{% endblock %}
+
+ {% block javascript %}
+     {% for asset in [
+     'ticker.js',
+     ] %}
+         <script src="{{ app.request.basepath }}/js/{{ asset }}" type="text/javascript"></script>
+     {% endfor %}
+     <script type="text/javascript">
+         $(function () {
+             $('#ticker').tickerme();
+         });
+     </script>
+ {% endblock %}
+{% block content_primary %}
+    <div class="col-lg-12 container-well-header">
+        <div class="col-lg-12 container-well-sm-header">
+            <div class="container-fluid" style="color: whitesmoke;  text-align: center;">
+                <div id="ticker">
+                    {% for b in birthday %}
+                        <div class="col-lg-12">
+                            <div class="cont-c">
+                                <div class="container-c">
+                                    <div class="balloon">
+                                        <div><span class="fonts-s span-b">☺</span>
+                                        </div>
+                                        <div><span class="fonts-s span-b">F</span>
+                                        </div>
+                                        <div><span class="fonts-s span-b">D</span>
+                                        </div>
+                                        <div><span class="fonts-s span-b">í</span>
+                                        </div>
+                                        <div><span class="fonts-s span-b">a</span>
+                                        </div>
+                                        <div><span class="fonts-s span-b">☺</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <img class="img-rounded img-thumbnail img-displayPhoto-b"
+                                     alt="Embedded Image"
+                                     src="data:image/png;base64,{{ b.displayPhoto }}"
+                                     style="float: left;"/>
+
+                                <div class="col-lg-9" style="color:crimson">{{ 'BBDO'|trans }}</div>
+                                <div class="col-lg-9">{{ 'Te desea un feliz cumpleaños' }} {{ b.nameUser|title|trans }} {{ b.lastnameUser|title|trans }} {{ b.secondSurname|title|trans }}</div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div>{{ 'No hay cumpleaños el día de hoy' }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Carousel-->
+    <div class="container-fluid col-lg-12 container-well-sm-carousel">
+        <div id="custom_carousel" class="carousel slide" data-ride="carousel" data-interval="126000">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner inner-line">
+                {% for index in number %}<!--Revisar la clase img-container-->
+                <div class="item {% if index == 0 %}{{ nameactive }}{% endif %} img-container"><!--Twig-->
+                    <div class="container-fluid">
+                        <div class="row">
+                            {% if index == 0 %}
+                                {% for newone in groupedNewsNoticeOne %}
+                                    {% for new in newone %}
+                                        {% include "home/slider/slider.html.twig" %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% elseif index == 1 %}
+                                {% for newtwo in groupedNewsNoticeTwo %}
+                                    {% for new in newtwo %}
+                                        {% include "home/slider/slider.html.twig" %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% elseif index == 2 %}
+                                {% for newthree in groupedNewsNoticeThree %}
+                                    {% for new in newthree %}
+                                        {% include "home/slider/slider.html.twig" %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% elseif index == 3 %}
+                                {% for newfour in groupedNewsNoticeFour %}
+                                    {% for new in newfour %}
+                                        {% include "home/slider/slider.html.twig" %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!--Twig END-->
+                {% endfor %} <!-- End Item -->
+            </div>
+            <!-- End Carousel Inner -->
+            <div class="controls">
+                <ul class="nav nav-color nav-v">
+                    {% for indexControls in number %}
+                        <li style="margin: 0; padding: 0;" data-target="#custom_carousel"
+                            data-slide-to="{{ indexControls }}"
+                            class="{% if indexControls == 0 %}{{ nameactive }}{% endif %}">
+                            {% if  indexControls == 0 %}
+                                {% for newone in groupedNewsNoticeOne %}
+                                    {% for new in newone %}
+                                        {% include "home/slider/indexControls.html.twig" %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% elseif indexControls == 1 %}
+                                {% for newone in groupedNewsNoticeTwo %}
+                                    {% for new in newone %}
+                                        {% include "home/slider/indexControls.html.twig" %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% elseif indexControls == 2 %}
+                                {% for newone in groupedNewsNoticeThree %}
+                                    {% for new in newone %}
+                                        {% include "home/slider/indexControls.html.twig" %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% elseif indexControls == 3 %}
+                                {% for newone in groupedNewsNoticeFour %}
+                                    {% for new in newone %}
+                                        {% include "home/slider/indexControls.html.twig" %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <!-- End Carousel -->
+    </div>
+    <!--Carousel END-->
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "home/base.html.twig" %}
+{% block content_primary %}
+    {% spaceless %}
+        <div class="well-sm well header-bbdo-h container-fluid"><h5
+                    class="text-center text-h">{{ 'Directorio Telefónico'|e|upper }}</h5></div>
+        <div class="container-fluid div-container-table" id="no-more-tables">
+
+        <div class="container-fluid" style="width: 80%;margin: 6em auto;">
+            <div class="col-lg-12" style="margin: 3em auto;">
+                <div class="row">
+                    <div class="search">
+                        <input type="text" class="form-control input-sm" maxlength="64" id="input-search"
+                               placeholder="Asistente de búsqueda"/>
+                        <button type="submit" class="btn b-absolute btn-bbdo-color btn-sm"><i class="fa fa-search">
+                            </i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for userv in userview|reverse %}
+                    {% if userv.statusUser == "Activo" %}
+                        {% if userv.annexTelephone %}
+                            <div class="clearfix searchable-container">
+                                <div class="items col-lg-12  well-sm well">
+                                    <div class="col-md-2 well-margin">
+                                        {% if userv.displayPhoto %}
+                                            <div  data-toggle="tooltip" data-placement="top"
+                                                 title="AREA:  {{ userv.areaUser|upper }} ~  {{ userv.postUser|upper }}">
+                                                <img class="img-circle img-displayPhoto"
+                                                     src="data:image/png;base64,{{ userv.displayPhoto }}"/>
+                                            </div>
+                                        {% else %}
+                                            <div data-toggle="tooltip" data-placement="top"
+                                                 title="AREA:  {{ userv.areaUser|upper }} ~  {{ userv.postUser|upper }}">
+                                                <img src="http://placehold.it/350x250"
+                                                     class="img-circle img-displayPhoto"
+                                                     alt="Selecione una imagen"></div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-10  well-sm well well-margin">
+                                        <div class="col-md-12  well-sm well div-well-salmon">
+                                            <small>Empresa BBDO</small>
+                                        </div>
+                                        <div class="col-md-12 well-margin">
+                                            <h5>Nombres: {{ userv.nameUser|e|title }}</h5>
+                                        </div>
+                                        <div class="col-md-12 well-margin well-margin">
+                                            <h5>
+                                                Apellidos: {{ userv.lastnameUser|e|title }} {{ userv.secondSurname|e|title }}</h5>
+                                        </div>
+                                        <div class="col-md-12 well-margin well-margin">
+                                            <h5>Anexo telefónico:
+                                                {{ userv.annexTelephone|e }}
+                                            </h5>
+                                        </div>
+                                        <div class="col-md-12  well-sm well div-well-snow">
+                                            <h6 style="float: right;">Email: {{ userv.mail|lower }}</h6>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}

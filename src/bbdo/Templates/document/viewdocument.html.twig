@@ -1,0 +1,72 @@
+{% extends "document/base.html.twig" %}
+{% block content_primary %}
+    <div class="well-sm well header-bbdo-h container-fluid"><h5
+                class="text-center text-h">{{ title|e|upper }}</h5></div>
+    <div class="container-fluid div-container-table" id="no-more-tables">
+        <div class="col-lg-12" style="margin: 3em auto;">
+            <div class="row">
+                <div class="search-right">
+                    <input type="text" class="form-control input-sm" maxlength="64" id="input-search"
+                           placeholder="Asistente de búsqueda"/>
+                    <button type="submit" class="btn b-absolute btn-bbdo-color btn-sm"><i class="fa fa-search">
+                        </i></button>
+                </div>
+            </div>
+        </div>
+        <table class="col-md-12 table-bordered table-striped table-condensed  table-hover table-color">
+            <thead class="thead-color">
+            <tr class="tr-height">
+                <th class="btn-responsive text-uppercase text-center">{{ 'Nombre'|trans }}</th>
+                <th class="btn-responsive text-uppercase text-center">{{ 'Descripción'|trans }}</th>
+                <th class="btn-responsive text-uppercase text-center">{{ 'Estado'|trans }}</th>
+                <th class="btn-responsive text-uppercase text-center">{{ 'Fecha de subida'|trans }}</th>
+                <th class="btn-responsive text-uppercase text-center">{{ 'Opciones'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody class="searchable-container">
+            {% for doc in document %}
+                <tr class="items">
+                    <td class="btn-responsive"
+                        data-title="{{ 'Nombre'|trans }}"
+                        style="background: rgba(237, 20, 61, 0.84); color: #ffffff;">{{ doc.nameDocument|e }}</td>
+                    <td class="btn-responsive"
+                        data-title="{{ 'Descripción'|trans }}">{{ doc.shortdescriptionDocument|e }}</td>
+                    <td class="btn-responsive text-center text-uppercase"
+                        data-title="{{ 'Estado'|trans }}">
+                        {% if doc.statusDocument == 'Activo' %}
+                            <small class="label label-success">
+                                {{ doc.statusDocument|e }}
+                            </small>
+                        {% else %}
+                            <small class="label label-danger">
+                                {{ doc.statusDocument|e }}
+                            </small>
+                        {% endif %}
+                    </td>
+                    <td class="btn-responsive text-center"
+                        data-title="{{ 'Fecha de subida'|trans }}"> {{ doc.createdAt|date('Y-m-d H:i:s a') }}</td>
+                    <!--Si esta acutalizado el parche de cambio de hora w7 dejar con esta refencia-->
+                    {# {{ notices.createdAt|date('Y-m-d H:i:s','America/Santiago') }} #}
+                    <td class="btn-responsive text-center" data-title="{{ 'Opciones'|trans }}">
+                        <a class="label label-primary"
+                           href="{{ path('bbdo_admindocument_edit', {'document': doc.iddocument}) }}"><i
+                                    class="fa fa-pencil-square-o"></i>&nbsp;EDITAR</a>
+                        <a class="label label-danger"
+                           href="{{ path('bbdo_admindocument_delete', {'document': doc.iddocument}) }}"><i
+                                    class="fa fa-pencil-square-o"></i>&nbsp;ELIMINAR</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="text-center text-danger" colspan="11">{{ 'No hay documentos subidos.'|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('bbdo_admindocument_add') }}"
+           class="btn  btn-danger btn-sm-s margin-top">{{ 'Añadir documento'|trans }}</a>
+
+        <div class="col-lg-12 row text-center">{% include 'administrator/form/pagination.html.twig' %}</div>
+    </div>
+{% endblock %}
+

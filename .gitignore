@@ -1,0 +1,6 @@
+.gitignore
+!.gitignore
+logs/
+app/cache/
+vendor/
+composer.phar

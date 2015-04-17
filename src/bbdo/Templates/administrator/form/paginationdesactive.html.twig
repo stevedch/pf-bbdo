@@ -1,0 +1,23 @@
+{% if numPages > 1 %}
+    <div class="pagination">
+        <ul class="nav navbar-nav">
+            {% if currentPage == 1 %}
+                <li class="disabled">
+                    <a>{{ 'Anterior'|trans }}</a>
+                </li>
+            {% elseif  currentPage == 2 %}
+                <li class="">
+                    <a href="{{ heredesactive }}?page={{ currentPage - 1 }}">{{ 'Anterior'|trans }}</a>
+                </li>
+            {% endif %}
+            {% for i in 1..numPages %}
+                <li {% if currentPage == i %}class="active"{% endif %}>
+                    <a href="{{ heredesactive }}?page={{ i }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+            <li {% if currentPage == numPages %}class="disabled"{% endif %}>
+                <a href="{{ heredesactive }}?page={{ currentPage + 1 }}">{{ 'Siguiente'|trans }}</a>
+            </li>
+        </ul>
+    </div>
+{% endif %}

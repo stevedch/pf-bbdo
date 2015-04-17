@@ -1,0 +1,202 @@
+{% extends 'administrator/base.html.twig' %}
+{% set active = 'form' %}
+{% block bbdo %}{% endblock %}
+{% block content_primary %}
+    <section class="container row" style="margin: 0 auto;width: 70%;">
+        {% set alertTypeAvaillable = [ 'info', 'success', 'warning', 'error'] %}
+        {% for alert in alertTypeAvaillable %}
+            {% for message in app.session.getFlashBag.get(alert) %}
+                <div class="alert alert-{{ alert }}" style="margin: 40px auto 0;width: 97%;">
+                    <button class="close" data-dismiss="alert">×</button>
+                    {{ message|trans }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <article class="container-fluid col-lg-12" style="margin-top: 5em;">
+            {% spaceless %}
+                {{ form_start(form) }}
+                <div class="col-lg-12 well well-sm" style="padding: 12px">
+                    <div class="col-lg-12 well well-sm" style="float: right;">
+                        <h2 class="text-center">
+                            <small>{{ title|trans }}</small>
+                        </h2>
+                    </div>
+                    <div class="col-lg-4 well well-sm" style="padding: 12px;">
+                        <div class="form-group">
+                            {% if user.displayPhoto %}
+                                <img style="width: 100%;height: 201px;margin: 20px auto;" class="img-rounded img-thumbnail"
+                                     alt="Embedded Image" src="data:image/png;base64,{{ user.displayPhoto }}"/>
+                            {% else %}
+                                <img style="width: 100%;height: 201px;margin: 20px auto;"
+                                     src="http://placehold.it/350x250"
+                                     class="img-responsive img-rounded img-thumbnail" alt="Selecione una imagen">
+                            {% endif %}
+                            <div class="input-group">
+                            <span class="input-group-addon info"><span
+                                        class="glyphicon glyphicon-asterisk"></span></span>
+                                {{ form_widget(form.photo_user) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 well well-sm">
+                        <div class="form-group">
+                            {{ form_label(form.run_user) }}
+                            <div class="input-group">
+                            <span class="input-group-addon danger"><span
+                                        class="glyphicon glyphicon-remove"></span></span>
+                                {{ form_widget(form.run_user) }}
+                                <!--Revisar disabled-->
+                                {#,{'disabled':'disabled'}#}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.name_user) }}
+                            <div class="input-group">
+                            <span class="input-group-addon danger"><span
+                                        class="glyphicon glyphicon-remove"></span></span>
+                                {{ form_widget(form.name_user) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.lastname_user) }}
+                            <div class="input-group">
+                            <span class="input-group-addon danger"><span
+                                        class="glyphicon glyphicon-remove"></span></span>
+                                {{ form_widget(form.lastname_user) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.second_surname) }}
+                            <div class="input-group">
+                            <span class="input-group-addon danger"><span
+                                        class="glyphicon glyphicon-remove"></span></span>
+                                {{ form_widget(form.second_surname) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 well well-sm">
+                        <div class="form-group">
+                            {{ form_label(form.birth_date) }}
+                            <div class="input-group">
+                            <span class="input-group-addon danger"><span
+                                        class="glyphicon glyphicon-remove"></span></span>
+                                {{ form_widget(form.birth_date) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.start_date) }}
+                            <div class="input-group">
+                            <span class="input-group-addon danger"><span
+                                        class="glyphicon glyphicon-remove"></span></span>
+                                {{ form_widget(form.start_date) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.area_user) }}
+                            <div class="input-group">
+                            <span class="input-group-addon danger"><span
+                                        class="glyphicon glyphicon-remove"></span></span>
+                                {{ form_widget(form.area_user) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.annex_telephone) }}
+                            <div class="input-group" data-validate="number">
+                           <span class="input-group-addon info"><span
+                                       class="glyphicon glyphicon-asterisk"></span></span>
+                                {{ form_widget(form.annex_telephone) }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-12 well well-sm">
+                    <div class="col-lg-6 well well-sm" style="padding: 12px;">
+                        <div class="form-group">
+                            {{ form_label(form.post_user) }}
+                            <div class="input-group">
+                                <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+                                {{ form_widget(form.post_user) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 well well-sm" style="padding: 12px;">
+                        <div class="form-group">
+                            {{ form_label(form.mail) }}
+                            <div class="input-group" data-validate="mail">
+                            <span class="input-group-addon danger"><span
+                                        class="glyphicon glyphicon-remove"></span></span>
+                                {{ form_widget(form.mail) }}
+                            </div>
+                        </div>
+                    </div>
+                    {% if is_granted('ROLE_RRHH_ADMIN') %}
+                        <div class="col-lg-12 well well-sm" style="padding: 12px;">
+                            <div class="form-group">
+                                {{ form_label(form.status_user) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>{{ form_widget(form.status_user) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <div class="col-lg-12 well well-sm">
+                        <div class="col-lg-12 well well-sm" style="float: right;"><h3 class="text-center">{{ 'Registro de usuario'|trans }}</h3></div>
+                        <div class="col-lg-6 well well-sm" style="padding: 12px;">
+                            <div class="form-group">
+                                {{ form_label(form.username) }}
+                                <div class="input-group">
+                                 <span class="input-group-addon info"><span
+                                             class="glyphicon glyphicon-asterisk"></span></span>{{ form_widget(form.username) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.role) }}
+                                <div class="input-group">
+                                <span class="input-group-addon info"><span
+                                            class="glyphicon glyphicon-asterisk"></span></span>{{ form_widget(form.role) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 well well-sm" style="padding: 12px;">
+                            <div class="form-group">
+                                {{ form_label(form.password.pass_1) }}
+                                <div class="input-group">
+                                 <span class="input-group-addon info"><span
+                                             class="glyphicon glyphicon-asterisk"></span></span>{{ form_widget(form.password.pass_1) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.password.pass_2) }}
+                                <div class="input-group">
+                                 <span class="input-group-addon info"><span
+                                             class="glyphicon glyphicon-asterisk"></span></span>{{ form_widget(form.password.pass_2) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 well well-sm" style="padding: 12px;">
+                            <div class="form-group">
+                                {{ form_label(form.role_public) }}
+                                <div class="input-group">
+                                 <span class="input-group-addon info"><span
+                                             class="glyphicon glyphicon-asterisk"></span></span>{{ form_widget(form.role_public) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}<!-- is_grantedn('ROLE_SUPER_ADMIN') END-->
+                <div class="col-lg-12 well well-sm" style="float: right;">
+                    <div class="form-group"><br>
+                        {{ form_widget(form._token) }}
+                        {{ form_widget(form.save) }}
+                    </div>
+                </div>
+            {% endspaceless %}
+        </article>
+    </section>
+{% endblock %}
